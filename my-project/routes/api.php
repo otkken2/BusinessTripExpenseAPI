@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HelloController;
+use App\Http\Controllers\TripController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,3 +22,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/hello',[HelloController::class,"hello"]);
 Route::get('/hoge',[HelloController::class,"hoge"]);
+
+
+Route::get('/meansOfTransport',[TripController::class,"getMeansOfTransport"]);
