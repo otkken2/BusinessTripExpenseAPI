@@ -3,8 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HelloController;
-use App\Http\Controllers\TripController;
-
+use App\Http\Controllers\PointController;
+use App\Http\Controllers\MeansOfTransportController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -24,4 +24,6 @@ Route::get('/hello',[HelloController::class,"hello"]);
 Route::get('/hoge',[HelloController::class,"hoge"]);
 
 
-Route::get('/meansOfTransport',[TripController::class,"getMeansOfTransport"]);
+Route::resource('businessTripExpense/points', PointController::class);
+// Route::get('businessTripExpense/points',[PointController::class,"index"]);
+Route::resource('businessTripExpense/meansOfTransport', MeansOfTransportController::class);

@@ -13,12 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::create('user_profiles', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedInteger('user_id')->constrained();
             $table->string('staff_number',30);
+            $table->string('name',30);
             $table->unsignedInteger('school_id')->constrained();
             $table->string('address',200);
             $table->unsignedInteger('job_title_id')->constrained('job_titles');
             $table->enum('role_type',['member','admin']);
+            $table->timestamps();
         });
     }
 
@@ -29,8 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('user_profiles');
     }
 };
