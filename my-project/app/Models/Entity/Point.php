@@ -9,5 +9,4 @@ class Point extends Model
 {
     use HasFactory;
     protected $fillable=['name','type'];
-    public $timestamps = false;
 }

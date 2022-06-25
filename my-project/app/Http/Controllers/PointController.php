@@ -41,7 +41,10 @@ class PointController extends Controller
      */
     public function store(Request $request)
     {
-        
+        $point = Point::create($request->all());
+        return response()->json([
+            "message" => "point record created!"
+        ],201);
     }
 
     /**
