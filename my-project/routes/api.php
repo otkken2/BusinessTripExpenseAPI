@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HelloController;
 use App\Http\Controllers\PointController;
 use App\Http\Controllers\MeansOfTransportController;
+use App\Http\Controllers\PlaceOfBusinessController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -25,5 +26,5 @@ Route::get('/hoge',[HelloController::class,"hoge"]);
 
 
 Route::resource('businessTripExpense/points', PointController::class);
-// Route::get('businessTripExpense/points',[PointController::class,"index"]);
 Route::resource('businessTripExpense/meansOfTransport', MeansOfTransportController::class);
+Route::resource('businessTripExpense/placesOfBusiness', PlaceOfBusinessController::class);

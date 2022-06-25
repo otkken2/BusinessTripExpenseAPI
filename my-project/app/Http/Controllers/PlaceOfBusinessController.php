@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Entity\Point;
+use App\Models\Entity\PlaceOfBusiness;
 
-class PointController extends Controller
+class PlaceOfBusinessController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('JpJsonResponse');
@@ -19,8 +18,8 @@ class PointController extends Controller
      */
     public function index()
     {
-        $points = Point::select(['id','name'])->get();
-        return response()->json(['points' => $points]);
+        $placesOfBusiness = PlaceOfBusiness::select(["id","name"])->get();
+        return response()->json(['placesOfBusiness' => $placesOfBusiness]);
     }
 
     /**
@@ -30,7 +29,7 @@ class PointController extends Controller
      */
     public function create()
     {
-        //
+      
     }
 
     /**
@@ -41,7 +40,11 @@ class PointController extends Controller
      */
     public function store(Request $request)
     {
-        
+        $placeOfBusiness = PlaceOfBusiness::create($request->all());
+
+        return response()->json([
+            "message" => "placeOfBusiness record created!"
+        ],201);
     }
 
     /**
