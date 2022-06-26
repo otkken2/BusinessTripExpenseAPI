@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Entity\Point;
+use Illuminate\Support\Facades\Log;
 
 class PointController extends Controller
 {
@@ -41,12 +42,17 @@ class PointController extends Controller
      */
     public function store(Request $request)
     {
+        $existingPoint = Point::where("name",$request['name'])->first();
+        Log::debug($existingPoint ? $existingPoint["name"] : "同じデータなさそう");
+
+        if($existingPoint){
+            return ;
+        }
         $point = Point::create($request->all());
         return response()->json([
             "message" => "point record created!"
         ],201);
     }
-
     /**
      * Display the specified resource.
      *
