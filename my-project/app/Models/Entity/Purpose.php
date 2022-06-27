@@ -24,4 +24,5 @@ use Illuminate\Database\Eloquent\Model;
 class Purpose extends Model
 {
     use HasFactory;
+    protected $fillable = ["name"];
 }

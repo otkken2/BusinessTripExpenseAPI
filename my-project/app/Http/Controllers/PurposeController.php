@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Entity\Purpose;
 use Illuminate\Http\Request;
-use App\Models\Entity\MeansOfTransport;
 
-class MeansOfTransportController extends Controller
+class PurposeController extends Controller
 {
     public function __construct()
     {
@@ -18,8 +18,8 @@ class MeansOfTransportController extends Controller
      */
     public function index()
     {
-        $meansOfTransport = MeansOfTransport::select(["id","name"])->get();
-        return response()->json(['meansOfTransport'=> $meansOfTransport]);
+        $purposes = Purpose::select(['id','name'])->get();
+        return response()->json(['purposes' => $purposes]);
     }
 
     /**
@@ -40,14 +40,14 @@ class MeansOfTransportController extends Controller
      */
     public function store(Request $request)
     {
-        $existingMeansOfTransport = MeansOfTransport::where("name",$request["name"])->first();
-        if($existingMeansOfTransport){
-            return ;
+        $existingPurpose = Purpose::where("name",$request["name"])->first();
+        if($existingPurpose){
+            return;
         }
-        $meansOfTransport = MeansOfTransport::create($request->all());
+        $purpose = Purpose::create($request->all());
         return response()->json([
-            "message" => "meansOfTransport record created!"
-        ],201);
+            "message" => "purpose record created!"
+        ]);
     }
 
     /**

@@ -25,4 +25,5 @@ class MeansOfTransport extends Model
 {
     use HasFactory;
     protected $table = 'means_of_transport';
+    protected $fillable = ["name"];
 }

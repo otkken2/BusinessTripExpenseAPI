@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Entity\PlaceOfBusiness;
+use Illuminate\Support\Facades\Log;
 
 class PlaceOfBusinessController extends Controller
 {
@@ -29,7 +30,7 @@ class PlaceOfBusinessController extends Controller
      */
     public function create()
     {
-      
+
     }
 
     /**
@@ -40,6 +41,12 @@ class PlaceOfBusinessController extends Controller
      */
     public function store(Request $request)
     {
+        $existingPlaceOfBusiness = PlaceOfBusiness::where("name",$request['name'])->first();
+        Log::debug($existingPlaceOfBusiness ? $existingPlaceOfBusiness["name"] : "同じデータなさそう");
+
+        if($existingPlaceOfBusiness){
+            return ;
+        }
         $placeOfBusiness = PlaceOfBusiness::create($request->all());
 
         return response()->json([

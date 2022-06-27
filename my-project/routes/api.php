@@ -6,6 +6,8 @@ use App\Http\Controllers\HelloController;
 use App\Http\Controllers\PointController;
 use App\Http\Controllers\MeansOfTransportController;
 use App\Http\Controllers\PlaceOfBusinessController;
+use App\Http\Controllers\PurposeController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -28,3 +30,4 @@ Route::get('/hoge',[HelloController::class,"hoge"]);
 Route::resource('businessTripExpense/points', PointController::class);
 Route::resource('businessTripExpense/meansOfTransport', MeansOfTransportController::class);
 Route::resource('businessTripExpense/placesOfBusiness', PlaceOfBusinessController::class);
+Route::resource('businessTripExpense/purpose',PurposeController::class);
