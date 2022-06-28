@@ -36,4 +36,11 @@ use Illuminate\Database\Eloquent\Model;
 class ServiceSection extends Model
 {
     use HasFactory;
+    public function meansOfTransport(){
+        return $this->hasOne("App\Models\Entity\MeansOfTransport");
+    }
+
+    public function points(){
+        return $this->hasMany("App\Models\Entity\Point");
+    }
 }
