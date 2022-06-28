@@ -42,13 +42,8 @@ class ServiceSectionController extends Controller
     public function store(Request $request)
     {
         $serviceSection = new ServiceSection();
-        $serviceSection->means_of_transport_id = MeansOfTransport::where("name",$request["meansOfTransport"])->first()->id;
-        $serviceSection->start_point_id = Point::where("name",$request["startPointName"])->first()->id;
-        $serviceSection->end_point_id = Point::where("name",$request["endPointName"])->first()->id;
-        $serviceSection->expense = $request["expense"];
-        $serviceSection->one_way_or_round_trip = $request["oneWayOrRoundTrip"];
-        $serviceSection->is_route_overlap = $request["isRouteOverLap"];
-        $serviceSection->save();
+        $serviceSection->registAll($request);
+
         return response()->json([
             "message" => "serviceSection record created!"
         ],201);
