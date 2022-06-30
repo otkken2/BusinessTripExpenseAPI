@@ -26,4 +26,11 @@ class PlaceOfBusiness extends Model
     use HasFactory;
     protected $table="places_of_business";
     protected $fillable = ['name'];
+
+    public static function createNewRecord($tripDataFromRequest){
+        $newRecord = new self();
+        $newRecord->name = $tripDataFromRequest["placeOfBusiness"];
+        $newRecord->save();
+        return $newRecord;
+    }
 }

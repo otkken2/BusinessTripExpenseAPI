@@ -8,6 +8,7 @@ use App\Http\Controllers\MeansOfTransportController;
 use App\Http\Controllers\PlaceOfBusinessController;
 use App\Http\Controllers\PurposeController;
 use App\Http\Controllers\ServiceSectionController;
+use App\Http\Controllers\TripController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,3 +34,4 @@ Route::resource('businessTripExpense/meansOfTransport', MeansOfTransportControll
 Route::resource('businessTripExpense/placesOfBusiness', PlaceOfBusinessController::class);
 Route::resource('businessTripExpense/purpose',PurposeController::class);
 Route::resource('businessTripExpense/serviseSection',ServiceSectionController::class);
+Route::resource('businessTripExpense',TripController::class);

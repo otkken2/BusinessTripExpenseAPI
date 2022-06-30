@@ -2,8 +2,10 @@
 
 namespace App\Models\Entity;
 
+use App\Models\Entity\Purpose as EntityPurpose;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
 /**
  * App\Models\Entity\Purpose
@@ -25,4 +27,14 @@ class Purpose extends Model
 {
     use HasFactory;
     protected $fillable = ["name"];
+    public function trips(){
+        $this->belongsTo("App\Models\Entity\Trip");
+    }
+
+    public static function createNewRecord($tripDataFromRequest){
+        $newPurpose = new self();
+        $newPurpose->name = $tripDataFromRequest["purpose"];
+        $newPurpose->save();
+        return $newPurpose;
+    }
 }

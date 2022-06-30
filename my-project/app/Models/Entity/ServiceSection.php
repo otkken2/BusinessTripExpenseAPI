@@ -40,6 +40,9 @@ use App\Models\Entity\Point;
 class ServiceSection extends Model
 {
     use HasFactory;
+    public function trip(){
+        return $this->belongsTo("App\Models\Entity\Trip");
+    }
     public function meansOfTransport(){
         return $this->hasOne("App\Models\Entity\MeansOfTransport");
     }
@@ -100,6 +103,7 @@ class ServiceSection extends Model
     public function registAll(Request $request){
         $this->registMeansOfTransportId($request);
         $this->registStartPointId($request);
+        $this->registerEndPointId($request);
         $this->registExpense($request);
         $this->registOnewWayOrRoundTrip($request);
         $this->registIsRouteOverlap($request);
