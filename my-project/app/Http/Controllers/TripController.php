@@ -44,7 +44,7 @@ class TripController extends Controller
     public function store(Request $request)
     {
         $trip = new Trip();
-        // Log::debug($request);
+        Log::debug($request);
         $trip->registAll($request);
 
         return response()->json([

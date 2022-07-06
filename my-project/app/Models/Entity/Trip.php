@@ -102,6 +102,7 @@ class Trip extends Model
             ServiceSection::createNewRecord($serviceSectionDataFromRequest,$this);
         }
         PrivateCarDriveDistance::createNewRecord($tripDataFromRequest,$this);
+        HotelCharge::createNewRecord($tripDataFromRequest,$this);
     }
 }
 

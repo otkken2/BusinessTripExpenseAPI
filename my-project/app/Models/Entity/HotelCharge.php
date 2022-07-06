@@ -23,7 +23,31 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|HotelCharge whereUpdatedAt($value)
  * @mixin \Eloquent
  */
+enum HotelChargeEnum: string{
+    case Kou = "13000";
+    case Otsu = "11700";
+    case ActualHotelCharge = "ActualHotelCharge";
+}
 class HotelCharge extends Model
 {
     use HasFactory;
+    public function trips(){
+        return $this->belongsTo("App\Models\Entity\Trip");
+    }
+    public static function createNewRecord($tripDataFromRequest,Trip $trip){
+        if(!$tripDataFromRequest["hotelChargeType"]){return ;}
+
+        $hotelCharge = new self;
+        if($tripDataFromRequest["hotelChargeType"] == HotelChargeEnum::Kou->value){
+            $hotelCharge->hotel_charge = (int)HotelChargeEnum::Kou->value;
+        }
+        elseif($tripDataFromRequest["hotelChargeType"] == HotelChargeEnum::Otsu->value){
+            $hotelCharge->hotel_charge = (int)HotelChargeEnum::Otsu->value;
+        }
+        elseif($tripDataFromRequest["hotelChargeType"] == HotelChargeEnum::ActualHotelCharge->value){
+            $hotelCharge->hotel_charge = $tripDataFromRequest["actualHotelChargeValue"];
+        }
+        $hotelCharge->trip_id = $trip->id;
+        $hotelCharge->save();
+    }
 }
