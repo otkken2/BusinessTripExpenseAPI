@@ -25,7 +25,21 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|CateredBurdenAmount whereUpdatedAt($value)
  * @mixin \Eloquent
  */
+enum AmountType {
+    case FullAmount;
+    case Fare;
+    case Other;
+}
 class CateredBurdenAmount extends Model
 {
     use HasFactory;
+    public static function createNewRecord($tripDataFromRequest,Trip $trip){
+        if(!$tripDataFromRequest["burdenAmount"] == 0){return ;}
+        $newRecord = new self;
+        $newRecord->amount = $tripDataFromRequest["burdenAmount"];
+        // TODO $newRecord->amount_type
+        $newRecord->trip_id = $trip->id;
+        $newRecord->save();
+    }
+
 }
