@@ -26,4 +26,14 @@ use Illuminate\Database\Eloquent\Model;
 class PrivateCarDriveDistance extends Model
 {
     use HasFactory;
+    public function trip(){
+        $this->belongsTo("App\Models\Entity\Trip");
+    }
+    public static function createNewRecord($tripDataFromRequest,Trip $trip){
+        if(!$tripDataFromRequest["distanceValue"]){return ;}
+        $newRecord = new self();
+        $newRecord->distance = $tripDataFromRequest["distanceValue"];
+        $newRecord->trip_id = $trip->id;
+        $newRecord->save();
+    }
 }

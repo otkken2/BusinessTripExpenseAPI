@@ -27,4 +27,10 @@ class Point extends Model
 {
     use HasFactory;
     protected $fillable=['name','type'];
+    public static function createNewRecord($name){
+        $newRecord = new self();
+        $newRecord->name = $name;
+        $newRecord->save();
+        return $newRecord;
+    }
 }

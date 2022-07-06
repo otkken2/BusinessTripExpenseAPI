@@ -51,62 +51,62 @@ class ServiceSection extends Model
         return $this->hasMany("App\Models\Entity\Point");
     }
 
-    public function registMeansOfTransportId(Request $request){
+    public function registMeansOfTransportId($request){
         $existingMeansOfTransport = MeansOfTransport::where("name",$request["meansOfTransport"])->first();
         if($existingMeansOfTransport){
             $this->means_of_transport_id = $existingMeansOfTransport->id;
         }
         else{
-            $meansOfTransport = new MeansOfTransport();
-            $meansOfTransport->name = $request["meansOfTransport"];
-            $meansOfTransport->save();
-            $this->means_of_transport_id = $meansOfTransport->id;
+            $newMeansOfTransport = MeansOfTransport::createNewRecord($request["meansOfTransport"]);
+            $this->means_of_transport_id = $newMeansOfTransport->id;
         }
     }
 
-    public function registStartPointId(Request $request){
-        $existingStartPoint = Point::where("name",$request["startPointName"])->first();
+    public function registStartPointId($request){
+        $existingStartPoint = Point::where("name",$request["startPoint"])->first();
         if($existingStartPoint){
             $this->start_point_id = $existingStartPoint->id;
         }
         else{
-            $startPoint = new Point();
-            $startPoint->name = $request["startPointName"];
-            $startPoint->save();
-            $this->start_point_id = $startPoint->id;
+            $newStartPoint = Point::createNewRecord($request["startPoint"]);
+            $this->start_point_id = $newStartPoint->id;
         }
     }
 
-    public function registerEndPointId(Request $request){
-        $existingEndPoint = Point::where("name",$request["endPointName"])->first();
+    public function registerEndPointId($request){
+        $existingEndPoint = Point::where("name",$request["endPoint"])->first();
         if($existingEndPoint){
             $this->end_point_id = $existingEndPoint->id;
         }
         else{
-            $endPoint = new Point();
-            $endPoint->name = $request["endPointName"];
-            $endPoint->save();
-            $this->end_point_id = $endPoint->id;
+            $newEndPoint = Point::createNewRecord($request["endPoint"]);
+            $this->end_point_id = $newEndPoint->id;
         }
     }
 
-    public function registExpense(Request $request){
-        $this->expense = $request["expense"];
+    public function registExpense($request){
+        $this->expense = $request["serviceSectionExpense"];
     }
-    public function registOnewWayOrRoundTrip(Request $request){
+    public function registOnewWayOrRoundTrip($request){
         $this->one_way_or_round_trip = $request["oneWayOrRoundTrip"];
     }
-    public function registIsRouteOverlap(Request $request){
-        $this->is_route_overlap = $request["isRouteOverLap"];
+    public function registIsRouteOverlap($request){
+        $this->is_route_overlap = $request["isRouteOverLap"] ? 1:0;
     }
 
-    public function registAll(Request $request){
+    public function registAll($request,Trip $trip){
         $this->registMeansOfTransportId($request);
         $this->registStartPointId($request);
         $this->registerEndPointId($request);
         $this->registExpense($request);
         $this->registOnewWayOrRoundTrip($request);
         $this->registIsRouteOverlap($request);
+        $this->trip_id = $trip->id;
         $this->save();
+    }
+
+    public static function createNewRecord($serviceSectionDataFromRequest,Trip $trip){
+        $newRecord = new self();
+        $newRecord->registAll($serviceSectionDataFromRequest,$trip);
     }
 }

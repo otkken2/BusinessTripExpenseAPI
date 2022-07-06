@@ -16,6 +16,10 @@ use Illuminate\Database\Eloquent\Model;
 class LastdayOfTrip extends Model
 {
     use HasFactory;
+    protected $table = "last_days_of_trips";
+    public function trip(){
+        $this->belongsTo("App\Models\Entity\Trip");
+    }
     public static function createNewRecord($tripDataFromRequest,Trip $trip){
         if(!$tripDataFromRequest["lastDay"]){return;}
         $newRecord = new self();

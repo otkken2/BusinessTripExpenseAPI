@@ -42,7 +42,7 @@ class ServiceSectionController extends Controller
     public function store(Request $request)
     {
         $serviceSection = new ServiceSection();
-        $serviceSection->registAll($request);
+        // $serviceSection->registAll($request);
 
         return response()->json([
             "message" => "serviceSection record created!"

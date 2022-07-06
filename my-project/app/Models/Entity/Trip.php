@@ -46,6 +46,7 @@ class Trip extends Model
 {
     use HasFactory;
     protected $guarded = ["id","created_at","updated_at"];
+    private const MISCELLANEOUS_EXPENSE_UNIT_PRICE = 120;
     public function serviceSections(){
         $this->hasMany("App\Models\Entity\ServiceSection");
     }
@@ -85,19 +86,22 @@ class Trip extends Model
     public function registAll(Request $request){
         $tripDataFromRequest = $request["trip"];
         $this->first_day = $tripDataFromRequest["firstDay"];
-        // TODO 別テーブルに分けて格納される予定の、最終日（lastDay）をここに追記する。
-        LastdayOfTrip::createNewRecord($tripDataFromRequest,$this);
         $this->day_or_overnight = $tripDataFromRequest["dayOrOvernight"];
         $this->registPurposeId($tripDataFromRequest);
         $this->registPlaceOfBusinessId($tripDataFromRequest);
         // TODO ユーザーIDをregistする機能。この↓１行は仮。
         $this->user_id = random_int(1,20);
-        $this->on_foot_all = $tripDataFromRequest["onFootAll"];
-        $this->go_directly = $tripDataFromRequest("goDirectly");
-        $this->return_directly = $tripDataFromRequest["returnDirectly"];
-        $this->use_of_public_car_all = $tripDataFromRequest["useOfPublicCarAll"];
-        $this->use_of_private_car_all = $tripDataFromRequest["useOfPrivateCarAll"];
-        $this->miscellaneous_expense = $tripDataFromRequest["miscellaneous_expense"];
+        $this->go_directly = $tripDataFromRequest["isCheckedGoDirectly"];
+        $this->return_directly = $tripDataFromRequest["isCheckedReturnDirectly"];
+        $this->miscellaneous_expense = $tripDataFromRequest["numberOfTripDays"] * self::MISCELLANEOUS_EXPENSE_UNIT_PRICE;
+        $this->total_expense = $tripDataFromRequest["totalExpense"];
         $this->save();
+        AllTheWayType::createNewRecord($tripDataFromRequest,$this);
+        LastdayOfTrip::createNewRecord($tripDataFromRequest,$this);
+        foreach ($tripDataFromRequest["serviceSections"] as $serviceSectionDataFromRequest){
+            ServiceSection::createNewRecord($serviceSectionDataFromRequest,$this);
+        }
+        PrivateCarDriveDistance::createNewRecord($tripDataFromRequest,$this);
     }
 }
+

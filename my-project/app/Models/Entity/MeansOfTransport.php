@@ -26,4 +26,10 @@ class MeansOfTransport extends Model
     use HasFactory;
     protected $table = 'means_of_transport';
     protected $fillable = ["name"];
+    public static function createNewRecord(string $name):self{
+        $newRecord = new self();
+        $newRecord->name = $name;
+        $newRecord->save();
+        return $newRecord;
+    }
 }
