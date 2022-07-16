@@ -33,6 +33,10 @@ enum AmountType {
 class CateredBurdenAmount extends Model
 {
     use HasFactory;
+    public const FULL_AMOUNT = "fullAmount";
+    public const FARE = "fare";
+    public const OTHER = "other";
+
     public static function createNewRecord($tripDataFromRequest,Trip $trip){
         if(!$tripDataFromRequest["burdenAmount"] == 0){return ;}
         $newRecord = new self;

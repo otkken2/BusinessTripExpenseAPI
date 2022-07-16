@@ -98,8 +98,11 @@ class Trip extends Model
         $this->save();
         AllTheWayType::createNewRecord($tripDataFromRequest,$this);
         LastdayOfTrip::createNewRecord($tripDataFromRequest,$this);
-        foreach ($tripDataFromRequest["serviceSections"] as $serviceSectionDataFromRequest){
-            ServiceSection::createNewRecord($serviceSectionDataFromRequest,$this);
+        // 利用者が交通機関を利用していない（全行程徒歩などの）場合には以下のif文に入らない。
+        if(!in_array(null,$tripDataFromRequest["serviceSections"][0])){
+            foreach ($tripDataFromRequest["serviceSections"] as $serviceSectionDataFromRequest){
+                ServiceSection::createNewRecord($serviceSectionDataFromRequest,$this);
+            }
         }
         PrivateCarDriveDistance::createNewRecord($tripDataFromRequest,$this);
         HotelCharge::createNewRecord($tripDataFromRequest,$this);

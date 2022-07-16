@@ -55,11 +55,11 @@ class ServiceSection extends Model
         $existingMeansOfTransport = MeansOfTransport::where("name",$request["meansOfTransport"])->first();
         if($existingMeansOfTransport){
             $this->means_of_transport_id = $existingMeansOfTransport->id;
+            return;
         }
-        else{
-            $newMeansOfTransport = MeansOfTransport::createNewRecord($request["meansOfTransport"]);
-            $this->means_of_transport_id = $newMeansOfTransport->id;
-        }
+        $newMeansOfTransport = MeansOfTransport::createNewRecord($request["meansOfTransport"]);
+        $this->means_of_transport_id = $newMeansOfTransport->id;
+
     }
 
     public function registStartPointId($request){

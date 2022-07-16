@@ -4,6 +4,7 @@ namespace App\Models\Entity;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Enums\HotelChargeEnum;
 
 /**
  * App\Models\Entity\HotelCharge
@@ -23,28 +24,29 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|HotelCharge whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-enum HotelChargeEnum: string{
-    case Kou = "13000";
-    case Otsu = "11700";
-    case ActualHotelCharge = "ActualHotelCharge";
-}
+
 class HotelCharge extends Model
 {
+    public const KOU = 13000;
+    public const OTSU = 11700;
+    public const ACTUAL_HOTEL_CHARGE = "ActualHotelCharge";
+
     use HasFactory;
     public function trips(){
         return $this->belongsTo("App\Models\Entity\Trip");
     }
     public static function createNewRecord($tripDataFromRequest,Trip $trip){
+        if(!array_key_exists("hotelChargeType",$tripDataFromRequest)){return;}
         if(!$tripDataFromRequest["hotelChargeType"]){return ;}
 
         $hotelCharge = new self;
-        if($tripDataFromRequest["hotelChargeType"] == HotelChargeEnum::Kou->value){
-            $hotelCharge->hotel_charge = (int)HotelChargeEnum::Kou->value;
+        if($tripDataFromRequest["hotelChargeType"] == self::KOU){
+            $hotelCharge->hotel_charge = (int)self::KOU;
         }
-        elseif($tripDataFromRequest["hotelChargeType"] == HotelChargeEnum::Otsu->value){
-            $hotelCharge->hotel_charge = (int)HotelChargeEnum::Otsu->value;
+        elseif($tripDataFromRequest["hotelChargeType"] == self::OTSU){
+            $hotelCharge->hotel_charge = (int)self::OTSU;
         }
-        elseif($tripDataFromRequest["hotelChargeType"] == HotelChargeEnum::ActualHotelCharge->value){
+        elseif($tripDataFromRequest["hotelChargeType"] == self::ACTUAL_HOTEL_CHARGE){
             $hotelCharge->hotel_charge = $tripDataFromRequest["actualHotelChargeValue"];
         }
         $hotelCharge->trip_id = $trip->id;

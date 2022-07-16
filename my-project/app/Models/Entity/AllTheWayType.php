@@ -13,6 +13,7 @@ class AllTheWayType extends Model
         return $this->belongsTo("App\Models\Entity\Trip");
     }
     public static function createNewRecord($tripDataFromRequest,Trip $trip){
+        if(!array_key_exists("allTheWayType",$tripDataFromRequest)){return;}
         if(!$tripDataFromRequest["allTheWayType"]){return;}
         $newRecord = new self();
         $newRecord->all_the_way_type = $tripDataFromRequest["allTheWayType"];

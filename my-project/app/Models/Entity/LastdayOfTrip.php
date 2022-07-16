@@ -21,6 +21,7 @@ class LastdayOfTrip extends Model
         $this->belongsTo("App\Models\Entity\Trip");
     }
     public static function createNewRecord($tripDataFromRequest,Trip $trip){
+        if(!array_key_exists("lastDay",$tripDataFromRequest)){return;}
         if(!$tripDataFromRequest["lastDay"]){return;}
         $newRecord = new self();
         $newRecord->last_day = $tripDataFromRequest["lastDay"];
