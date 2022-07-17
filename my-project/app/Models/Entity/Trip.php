@@ -2,9 +2,13 @@
 
 namespace App\Models\Entity;
 
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+
 
 /**
  * App\Models\Entity\Trip
@@ -84,28 +88,37 @@ class Trip extends Model
     // TODO tripに含まれる情報であるものの、nullableを避けるために別テーブルとしている項目については、追々対応する
 
     public function registAll(Request $request){
-        $tripDataFromRequest = $request["trip"];
-        $this->first_day = $tripDataFromRequest["firstDay"];
-        $this->day_or_overnight = $tripDataFromRequest["dayOrOvernight"];
-        $this->registPurposeId($tripDataFromRequest);
-        $this->registPlaceOfBusinessId($tripDataFromRequest);
-        // TODO ユーザーIDをregistする機能。この↓１行は仮。
-        $this->user_id = random_int(1,20);
-        $this->go_directly = $tripDataFromRequest["isCheckedGoDirectly"];
-        $this->return_directly = $tripDataFromRequest["isCheckedReturnDirectly"];
-        $this->miscellaneous_expense = $tripDataFromRequest["numberOfTripDays"] * self::MISCELLANEOUS_EXPENSE_UNIT_PRICE;
-        $this->total_expense = $tripDataFromRequest["totalExpense"];
-        $this->save();
-        AllTheWayType::createNewRecord($tripDataFromRequest,$this);
-        LastdayOfTrip::createNewRecord($tripDataFromRequest,$this);
-        // 利用者が交通機関を利用していない（全行程徒歩などの）場合には以下のif文に入らない。
-        if(!in_array(null,$tripDataFromRequest["serviceSections"][0])){
-            foreach ($tripDataFromRequest["serviceSections"] as $serviceSectionDataFromRequest){
-                ServiceSection::createNewRecord($serviceSectionDataFromRequest,$this);
+        DB::beginTransaction();
+        try{
+            $tripDataFromRequest = $request["trip"];
+            $this->first_day = $tripDataFromRequest["firstDay"];
+            $this->day_or_overnight = $tripDataFromRequest["dayOrOvernight"];
+            $this->registPurposeId($tripDataFromRequest);
+            $this->registPlaceOfBusinessId($tripDataFromRequest);
+            // TODO ユーザーIDをregistする機能。この↓１行は仮。
+            $this->user_id = random_int(1,20);
+            $this->go_directly = $tripDataFromRequest["isCheckedGoDirectly"];
+            $this->return_directly = $tripDataFromRequest["isCheckedReturnDirectly"];
+            $this->miscellaneous_expense = $tripDataFromRequest["numberOfTripDays"] * self::MISCELLANEOUS_EXPENSE_UNIT_PRICE;
+            $this->total_expense = $tripDataFromRequest["totalExpense"];
+            $this->save();
+            AllTheWayType::createNewRecord($tripDataFromRequest,$this);
+            LastdayOfTrip::createNewRecord($tripDataFromRequest,$this);
+            // 利用者が交通機関を利用していない（全行程徒歩などの）場合には以下のif文に入らない。
+            // if(!in_array(null,$tripDataFromRequest["serviceSections"][0])){
+            if(ServiceSection::isExistRequestData($tripDataFromRequest)){
+                Log::debug("serviceSectionのレコード作成に入ります。");
+                foreach ($tripDataFromRequest["serviceSections"] as $serviceSectionDataFromRequest){
+                    ServiceSection::createNewRecord($serviceSectionDataFromRequest,$this);
+                }
             }
+            PrivateCarDriveDistance::createNewRecord($tripDataFromRequest,$this);
+            HotelCharge::createNewRecord($tripDataFromRequest,$this);
+            CateredBurdenAmount::createNewRecord($tripDataFromRequest,$this);
+            DB::commit();
+        }catch(\Exception $e){
+            DB::rollBack();
         }
-        PrivateCarDriveDistance::createNewRecord($tripDataFromRequest,$this);
-        HotelCharge::createNewRecord($tripDataFromRequest,$this);
     }
 }
 

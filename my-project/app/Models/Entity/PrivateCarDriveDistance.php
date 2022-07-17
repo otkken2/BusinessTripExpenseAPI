@@ -30,9 +30,9 @@ class PrivateCarDriveDistance extends Model
         $this->belongsTo("App\Models\Entity\Trip");
     }
     public static function createNewRecord($tripDataFromRequest,Trip $trip){
-        if(!$tripDataFromRequest["distanceValue"]){return ;}
+        if(!$tripDataFromRequest["distanceOfDrivenByPrivateCar"]){return ;}
         $newRecord = new self();
-        $newRecord->distance = $tripDataFromRequest["distanceValue"];
+        $newRecord->distance = $tripDataFromRequest["distanceOfDrivenByPrivateCar"];
         $newRecord->trip_id = $trip->id;
         $newRecord->save();
     }

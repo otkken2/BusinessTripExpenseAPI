@@ -50,6 +50,15 @@ class ServiceSection extends Model
     public function points(){
         return $this->hasMany("App\Models\Entity\Point");
     }
+    public static function isExistRequestData($tripDataFromRequest):bool{
+        return (!(
+            in_array(null,array_column($tripDataFromRequest["serviceSections"],"means_of_transport"))
+            &&
+            in_array(null,array_column($tripDataFromRequest["serviceSections"],"startPoint"))
+            &&
+            in_array(null,array_column($tripDataFromRequest["serviceSections"],"endPoint"))
+        ));
+    }
 
     public function registMeansOfTransportId($request){
         $existingMeansOfTransport = MeansOfTransport::where("name",$request["meansOfTransport"])->first();
@@ -59,7 +68,6 @@ class ServiceSection extends Model
         }
         $newMeansOfTransport = MeansOfTransport::createNewRecord($request["meansOfTransport"]);
         $this->means_of_transport_id = $newMeansOfTransport->id;
-
     }
 
     public function registStartPointId($request){
