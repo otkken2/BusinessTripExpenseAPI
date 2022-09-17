@@ -36,6 +36,7 @@ class CateredBurdenAmount extends Model
 
     public static function createNewRecord($tripDataFromRequest,Trip $trip){
         if($tripDataFromRequest["burdenAmount"] == 0){return ;}
+        if($tripDataFromRequest["burdenAmountType"] == NULL){return ;}
         $newRecord = new self;
         $newRecord->amount = $tripDataFromRequest["burdenAmount"];
         // TODO $newRecord->amount_type

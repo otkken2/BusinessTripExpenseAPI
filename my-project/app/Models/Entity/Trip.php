@@ -116,8 +116,11 @@ class Trip extends Model
             HotelCharge::createNewRecord($tripDataFromRequest,$this);
             CateredBurdenAmount::createNewRecord($tripDataFromRequest,$this);
             DB::commit();
+            Log::debug("DBの変更をコミットしました。");
         }catch(\Exception $e){
             DB::rollBack();
+            Log::debug("ロールバックしました。");
+            Log::debug($e);
         }
     }
 }

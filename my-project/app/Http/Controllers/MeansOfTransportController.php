@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Entity\MeansOfTransport;
+use Illuminate\Log\Logger;
+use Illuminate\Support\Facades\Log;
 
 class MeansOfTransportController extends Controller
 {
@@ -19,6 +21,7 @@ class MeansOfTransportController extends Controller
     public function index()
     {
         $meansOfTransport = MeansOfTransport::select(["id","name"])->get();
+        Log::info($meansOfTransport);
         return response()->json(['meansOfTransport'=> $meansOfTransport]);
     }
 

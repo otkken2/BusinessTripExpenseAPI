@@ -21,8 +21,9 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-        $this->call(MeansOfTransportTableSeeder::class);
+        // $this->call(MeansOfTransportTableSeeder::class);
         // $this->call(FakerPointSeeder::class);
-        Point::factory()->count(30)->creat();
+        // Point::factory()->count(30)->creat();
+        $this->call(UserSeeder::class);
     }
 }

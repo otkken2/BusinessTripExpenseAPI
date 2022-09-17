@@ -52,11 +52,11 @@ class ServiceSection extends Model
     }
     public static function isExistRequestData($tripDataFromRequest):bool{
         return (!(
-            in_array(null,array_column($tripDataFromRequest["serviceSections"],"means_of_transport"))
+            in_array(NULL,array_column($tripDataFromRequest["serviceSections"],"meansOfTransport"))
             &&
-            in_array(null,array_column($tripDataFromRequest["serviceSections"],"startPoint"))
+            in_array(NULL,array_column($tripDataFromRequest["serviceSections"],"startPoint"))
             &&
-            in_array(null,array_column($tripDataFromRequest["serviceSections"],"endPoint"))
+            in_array(NULL,array_column($tripDataFromRequest["serviceSections"],"endPoint"))
         ));
     }
 
