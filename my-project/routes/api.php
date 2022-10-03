@@ -10,6 +10,7 @@ use App\Http\Controllers\PlaceOfBusinessController;
 use App\Http\Controllers\PurposeController;
 use App\Http\Controllers\ServiceSectionController;
 use App\Http\Controllers\TripController;
+use App\Http\Controllers\UserController;
 use Illuminate\Auth\Events\Login;
 
 /*
@@ -24,6 +25,7 @@ use Illuminate\Auth\Events\Login;
 */
 
 Route::post('login',[LoginController::class,'login']);
+Route::get('user',[UserController::class,'getUser']);
 
 Route::middleware(['api'])->group(function () {
     Route::resource('businessTripExpense/points', PointController::class);

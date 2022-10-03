@@ -21,9 +21,10 @@ class LoginController extends Controller
 
         if(Auth::attempt($credentials)){
             $request->session()->regenerate();
+            $request->session()->put('user', $credentials);
             return response()->json(Auth::user());
         }
-        Log::debug(response()->json([],401));
+        // Log::debug(response()->json([],401));
         return response()->json([],401);
     }
 }
